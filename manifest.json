@@ -6,5 +6,11 @@
   "action": {
     "default_popup": "index.html",
     "default_title": "Open Extension App"
-  }
+  },
+  "content_scripts": [
+    {
+      "js": ["src/scripts/content.ts"],
+      "matches": ["https://www.twitch.tv/*"]
+    }
+  ]
 }
