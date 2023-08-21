@@ -1,10 +1,14 @@
-const onShareButtonAdded = (shareButton: HTMLButtonElement) => {
-  const buttonText = "Later";
+const SHARE_BUTTON_SELECTOR = 'button[aria-label="Partager"]';
 
-  const watchLaterButtonContainer = document.createElement("div");
-  watchLaterButtonContainer.className = "Layout-sc-1xcs6mc-0 eVaozA";
+const handleWatchLaterButtonClick = () => {
+  console.log("Ajouter à regarder plus tard");
+};
 
-  watchLaterButtonContainer.innerHTML = `
+const createWatchLaterButtonElement = (buttonText: string) => {
+  const buttonContainer = document.createElement("div");
+  buttonContainer.className = "Layout-sc-1xcs6mc-0 eVaozA";
+
+  buttonContainer.innerHTML = `
   <div class="Layout-sc-1xcs6mc-0 eVaozA">
     <div class="Layout-sc-1xcs6mc-0 crbrgc">
       <div data-test-selector="toggle-balloon-wrapper__mouse-enter-detector" style="display: inherit;">
@@ -28,21 +32,32 @@ const onShareButtonAdded = (shareButton: HTMLButtonElement) => {
     </div>
   </div>`;
 
-  const buttonElement = watchLaterButtonContainer.querySelector("button");
+  const buttonElement = buttonContainer.querySelector("button");
+  if (buttonElement) {
+    buttonElement.addEventListener("click", handleWatchLaterButtonClick);
+  }
+
+  return buttonContainer;
+};
+
+const injectWatchLaterButton = () => {
+  const shareButton = document.querySelector(SHARE_BUTTON_SELECTOR);
+  if (!shareButton) return;
+
+  if (!shareButton) return;
+
+  const watchLaterButtonContainer =
+    createWatchLaterButtonElement("Watch later");
 
   const shareButtonContainer = shareButton.closest(".eVaozA");
   const parentContainer = shareButton.closest(".fbIPLy");
 
-  if (parentContainer) {
+  if (parentContainer && parentContainer.childNodes.length < 3) {
     parentContainer.appendChild(watchLaterButtonContainer);
     parentContainer.insertBefore(
       watchLaterButtonContainer,
       shareButtonContainer
     );
-
-    buttonElement?.addEventListener("click", () => {
-      console.log("Ajouter à regarder plus tard");
-    });
   }
 };
 
@@ -51,12 +66,11 @@ const observer = new MutationObserver((mutationsList) => {
   for (const mutation of mutationsList) {
     if (mutation.target instanceof Element) {
       const shareButton = mutation.target.querySelector(
-        'button[aria-label="Partager"]'
+        SHARE_BUTTON_SELECTOR
       ) as HTMLButtonElement | null;
 
       if (shareButton) {
-        observer.disconnect();
-        onShareButtonAdded(shareButton);
+        injectWatchLaterButton();
         break;
       }
     }
