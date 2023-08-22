@@ -9,7 +9,7 @@
   },
   "content_scripts": [
     {
-      "js": ["src/scripts/content.ts"],
+      "js": ["src/content/content.ts"],
       "matches": ["https://www.twitch.tv/*"]
     }
   ]
