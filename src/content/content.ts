@@ -1,5 +1,6 @@
 import { saveVOD } from "./saveVOD";
 import { createWatchLaterButtonElement } from "./watchLaterButton";
+import { injectWatchLaterTab } from "./watchLaterTab";
 
 const SHARE_BUTTON_SELECTOR = 'button[aria-label="Partager"]';
 
@@ -38,3 +39,5 @@ const observer = new MutationObserver((mutationsList) => {
 const observerConfig = { childList: true, subtree: true };
 
 observer.observe(document.body, observerConfig);
+
+injectWatchLaterTab();
