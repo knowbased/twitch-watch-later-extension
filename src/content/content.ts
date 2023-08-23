@@ -1,15 +1,12 @@
+import { saveVOD } from "./saveVOD";
 import { createWatchLaterButtonElement } from "./watchLaterButton";
 
 const SHARE_BUTTON_SELECTOR = 'button[aria-label="Partager"]';
 
-const handleWatchLaterButtonClick = () => {
-  console.log("Ajouter à regarder plus tard");
-};
-
 const injectWatchLaterButton = (container: Element) => {
   const watchLaterButtonContainer = createWatchLaterButtonElement(
     "Watch later",
-    handleWatchLaterButtonClick
+    saveVOD
   );
 
   container.insertBefore(watchLaterButtonContainer, container.firstChild);
