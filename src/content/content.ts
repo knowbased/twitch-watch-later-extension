@@ -1,3 +1,4 @@
+import { observeUrl } from "../utils/observeUrl";
 import { saveVOD } from "./saveVOD";
 import { createWatchLaterButtonElement } from "./watchLaterButton";
 import { injectWatchLaterTab } from "./watchLaterTab";
@@ -22,22 +23,37 @@ const onShareButtonMutation = (shareButton: Element) => {
   injectWatchLaterButton(parentContainer);
 };
 
-const observer = new MutationObserver((mutationsList) => {
-  for (const mutation of mutationsList) {
-    if (mutation.target instanceof Element) {
-      const shareButton = mutation.target.querySelector(
-        SHARE_BUTTON_SELECTOR
-      ) as HTMLButtonElement | null;
+const onUrlChange = (newUrl: string) => {
+  const followingUrl = "https://www.twitch.tv/directory/following";
+  const vodUrl = "https://www.twitch.tv/videos";
 
-      if (shareButton) {
-        onShareButtonMutation(shareButton);
-      }
-    }
+  if (newUrl.includes(followingUrl)) {
+    console.log("following");
+
+    injectWatchLaterTab();
   }
-});
 
-const observerConfig = { childList: true, subtree: true };
+  if (newUrl.includes(vodUrl)) {
+    console.log("VOD");
 
-observer.observe(document.body, observerConfig);
+    const observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (mutation.target instanceof Element) {
+          const shareButton = mutation.target.querySelector(
+            SHARE_BUTTON_SELECTOR
+          ) as HTMLButtonElement | null;
 
-injectWatchLaterTab();
+          if (shareButton) {
+            onShareButtonMutation(shareButton);
+          }
+        }
+      }
+    });
+
+    const observerConfig = { childList: true, subtree: true };
+
+    observer.observe(document.body, observerConfig);
+  }
+};
+
+observeUrl(onUrlChange);
