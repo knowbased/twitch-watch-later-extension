@@ -11,6 +11,10 @@ export const getVideos = (): videoData[] => {
 export const addVideo = (videoData: videoData) => {
   const videos = getVideos();
 
+  const videoExists = videos.some((video) => video.url === videoData.url);
+
+  if (videoExists) return;
+
   videos.push(videoData);
 
   localStorage.setItem("twitchVideosToWatchLater", JSON.stringify(videos));
