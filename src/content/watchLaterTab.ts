@@ -1,11 +1,6 @@
-export const injectWatchLaterTab = () => {
-  const tabList = document.querySelector("ul[role='tablist']");
+import { displayVideos } from "./displayVideos";
 
-  if (!tabList) {
-    console.error("Could not inject watch later tab : No tab list");
-    return;
-  }
-
+const createWatchLaterTab = () => {
   const watchLaterTab = document.createElement("li");
   watchLaterTab.setAttribute("role", "presentation");
   watchLaterTab.classList.add("InjectLayout-sc-1i43xsx-0", "UZpUA");
@@ -22,11 +17,7 @@ export const injectWatchLaterTab = () => {
     "jCwrcb"
   );
 
-  watchLaterTab.addEventListener("click", () => {
-    console.log("click on watch later tab");
-    // TODO : display videos
-    // displayWatchLaterVideos();
-  });
+  watchLaterTab.addEventListener("click", displayVideos);
 
   const watchLaterContent = document.createElement("div");
   watchLaterContent.classList.add("Layout-sc-1xcs6mc-0", "lakwgB");
@@ -48,6 +39,19 @@ export const injectWatchLaterTab = () => {
   watchLaterContent.appendChild(watchLaterTextWrapper);
   watchLaterLink.appendChild(watchLaterContent);
   watchLaterTab.appendChild(watchLaterLink);
+
+  return watchLaterTab;
+};
+
+export const injectWatchLaterTab = () => {
+  const tabList = document.querySelector("ul[role='tablist']");
+
+  if (!tabList) {
+    console.error("Could not inject watch later tab : No tab list");
+    return;
+  }
+
+  const watchLaterTab = createWatchLaterTab();
 
   tabList.appendChild(watchLaterTab);
 };
