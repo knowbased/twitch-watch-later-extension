@@ -23,6 +23,13 @@ const onShareButtonMutation = (shareButton: Element) => {
   injectWatchLaterButton(parentContainer);
 };
 
+const onTabListMutation = (tabList: Element) => {
+  // watchlater tab is already in DOM
+  if (tabList.childNodes.length === 6) return;
+
+  injectWatchLaterTab(tabList);
+};
+
 const onUrlChange = (newUrl: string) => {
   const followingUrl = "https://www.twitch.tv/directory/following";
   const vodUrl = "https://www.twitch.tv/videos";
@@ -30,7 +37,24 @@ const onUrlChange = (newUrl: string) => {
   if (newUrl.includes(followingUrl)) {
     console.log("following");
 
-    injectWatchLaterTab();
+    const observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (mutation.target instanceof Element) {
+          const tablist = mutation.target.querySelector(
+            "ul[role='tablist']"
+          ) as HTMLButtonElement | null;
+
+          if (tablist) {
+            onTabListMutation(tablist);
+            observer.disconnect();
+          }
+        }
+      }
+    });
+
+    const observerConfig = { childList: true, subtree: true };
+
+    observer.observe(document.body, observerConfig);
   }
 
   if (newUrl.includes(vodUrl)) {

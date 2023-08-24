@@ -43,14 +43,7 @@ const createWatchLaterTab = () => {
   return watchLaterTab;
 };
 
-export const injectWatchLaterTab = () => {
-  const tabList = document.querySelector("ul[role='tablist']");
-
-  if (!tabList) {
-    console.error("Could not inject watch later tab : No tab list");
-    return;
-  }
-
+export const injectWatchLaterTab = (tabList: Element) => {
   const watchLaterTab = createWatchLaterTab();
 
   tabList.appendChild(watchLaterTab);
