@@ -1,4 +1,5 @@
 import { observeUrl } from "../utils/observeUrl";
+import { clearVideos } from "./displayVideos";
 import { saveVOD } from "./saveVOD";
 import { createWatchLaterButtonElement } from "./watchLaterButton";
 import { injectWatchLaterTab } from "./watchLaterTab";
@@ -36,6 +37,8 @@ const onUrlChange = (newUrl: string) => {
 
   if (newUrl.includes(followingUrl)) {
     console.log("following");
+
+    clearVideos();
 
     const observer = new MutationObserver((mutationsList) => {
       for (const mutation of mutationsList) {

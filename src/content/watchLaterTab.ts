@@ -1,6 +1,6 @@
 import { displayVideos } from "./displayVideos";
 
-const createWatchLaterTab = () => {
+const createWatchLaterTab = (onClick: () => void) => {
   const watchLaterTab = document.createElement("li");
   watchLaterTab.setAttribute("role", "presentation");
   watchLaterTab.classList.add("InjectLayout-sc-1i43xsx-0", "UZpUA");
@@ -17,7 +17,7 @@ const createWatchLaterTab = () => {
     "jCwrcb"
   );
 
-  watchLaterTab.addEventListener("click", displayVideos);
+  watchLaterTab.addEventListener("click", onClick);
 
   const watchLaterContent = document.createElement("div");
   watchLaterContent.classList.add("Layout-sc-1xcs6mc-0", "lakwgB");
@@ -43,8 +43,14 @@ const createWatchLaterTab = () => {
   return watchLaterTab;
 };
 
+const handleTabClick = () => {
+  history.pushState({}, "", "/directory/watch-later");
+
+  displayVideos();
+};
+
 export const injectWatchLaterTab = (tabList: Element) => {
-  const watchLaterTab = createWatchLaterTab();
+  const watchLaterTab = createWatchLaterTab(handleTabClick);
 
   tabList.appendChild(watchLaterTab);
 };
