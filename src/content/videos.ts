@@ -1,6 +1,15 @@
-type videoData = {
+export type videoData = {
   title: string;
   url: string;
+  channel: {
+    name: string | null;
+    url: string;
+    thumbnail: string;
+  };
+  category: {
+    name: string | null;
+    url: string;
+  };
 };
 
 export const getVideos = (): videoData[] => {

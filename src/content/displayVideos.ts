@@ -1,4 +1,4 @@
-// import { getVideos } from "./videos";
+import { getVideos, videoData } from "./videos";
 
 const createSectionTitle = (title: string) => {
   const sectionHeader = document.createElement("header");
@@ -20,7 +20,7 @@ const createSectionTitle = (title: string) => {
   return sectionHeader;
 };
 
-const createVideoElement = () => {
+const createVideoElement = (videoData: videoData) => {
   const videoContainer = document.createElement("div");
   videoContainer.classList.add("Layout-sc-1xcs6mc-0", "iPAXTU");
 
@@ -118,6 +118,42 @@ const createVideoElement = () => {
 	</article>
 </div>`;
 
+  const titleLink = videoContainer.querySelector<HTMLAnchorElement>(
+    "a.ScCoreLink-sc-16kq0mq-0.eYjhIv.ScCoreLink-sc-bhsr9c-0.jYyMcQ.tw-link"
+  );
+
+  const previewCardLink = videoContainer.querySelector<HTMLAnchorElement>(
+    'a[data-a-target="preview-card-image-link"]'
+  );
+
+  previewCardLink!.href = videoData.url;
+
+  titleLink!.href = videoData.url;
+
+  const title = titleLink!.querySelector("h3");
+
+  title!.textContent = videoData.title;
+  title!.title = videoData.title;
+
+  const channelLink = videoContainer.querySelector<HTMLAnchorElement>(
+    'a[data-test-selector="ChannelLink"].ScCoreLink-sc-16kq0mq-0.eYjhIv.tw-link'
+  );
+
+  const channelAvatarElement = videoContainer.querySelector<HTMLImageElement>(
+    "img.InjectLayout-sc-1i43xsx-0.bEwPpb.tw-image.tw-image-avatar"
+  );
+
+  channelLink!.href = videoData.channel.url;
+  channelLink!.textContent = videoData.channel.name;
+  channelAvatarElement!.src = videoData.channel.thumbnail;
+
+  const categoryLink = videoContainer.querySelector<HTMLAnchorElement>(
+    'a[data-a-target="preview-card-game-link"]'
+  );
+
+  categoryLink!.href = videoData.category.url;
+  categoryLink!.textContent = videoData.category.name;
+
   return videoContainer;
 };
 
@@ -131,12 +167,12 @@ const clearSection = (section: HTMLElement) => {
 };
 
 export const displayVideos = () => {
-  //   const videos = getVideos();
+  const videos = getVideos();
 
   const videoSection = document.getElementById("following-page-main-content");
 
   if (!videoSection) {
-    console.error("Could display videos : No video section");
+    console.error("Could not display videos : No video section");
     return;
   }
 
@@ -145,8 +181,6 @@ export const displayVideos = () => {
   const sectionTitle = createSectionTitle("Watch later");
 
   videoSection.appendChild(sectionTitle);
-
-  // TODO : Add videos in the section
 
   const videoContainer = document.createElement("div");
   videoContainer.classList.add(
@@ -158,9 +192,10 @@ export const displayVideos = () => {
 
   videoSection.appendChild(videoContainer);
 
-  const video = createVideoElement();
-
-  videoContainer.appendChild(video);
+  videos.forEach((video) => {
+    const videoElement = createVideoElement(video);
+    videoContainer.appendChild(videoElement);
+  });
 };
 
 export const clearVideos = () => {
