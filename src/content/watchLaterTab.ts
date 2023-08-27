@@ -44,7 +44,7 @@ const createWatchLaterTab = (onClick: () => void) => {
 };
 
 const handleTabClick = () => {
-  history.pushState({}, "", "/directory/watch-later");
+  history.pushState({}, "", "/directory/following/watch-later");
 
   displayVideos();
 };
