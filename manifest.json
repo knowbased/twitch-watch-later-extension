@@ -12,5 +12,8 @@
       "js": ["src/content/content.ts"],
       "matches": ["https://www.twitch.tv/*"]
     }
-  ]
+  ],
+  "icons": {
+    "128": "src/assets/twitch-watch-later-logo-128x128.png"
+  }
 }
