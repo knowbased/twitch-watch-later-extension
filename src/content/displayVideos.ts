@@ -1,4 +1,4 @@
-import { getVideos, videoData } from "./videos";
+import { deleteVideo, getVideos, videoData } from "./videos";
 
 const createSectionTitle = (title: string) => {
   const sectionHeader = document.createElement("header");
@@ -54,12 +54,10 @@ const createVideoElement = (videoData: videoData) => {
 					</a>
 				</div>
 				<div class="Layout-sc-1xcs6mc-0 llNaON">
-					<button class="ScCoreButton-sc-ocjdkq-0 hUGgcQ ScButtonIcon-sc-9yap0r-0 hsbCAn" aria-label="Plus d'options" title="Plus d'options" data-a-target="report-button-more-button">
+					<button class="ScCoreButton-sc-ocjdkq-0 hUGgcQ ScButtonIcon-sc-9yap0r-0 hsbCAn" aria-label="remove" title="remove" data-a-target="remove-button">
 						<div class="ButtonIconFigure-sc-1emm8lf-0 kWtJXE">
 							<div class="ScFigure-sc-wkgzod-0 jNDIBh tw-svg">
-								<svg width="100%" height="100%" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
-									<path d="M10 18a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0-6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM8 4a2 2 0 1 0 4 0 2 2 0 0 0-4 0z"></path>
-								</svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
 							</div>
 						</div>
 					</button>
@@ -153,6 +151,15 @@ const createVideoElement = (videoData: videoData) => {
 
   categoryLink!.href = videoData.category.url;
   categoryLink!.textContent = videoData.category.name;
+
+  const deleteButton = videoContainer.querySelector(
+    ".ScCoreButton-sc-ocjdkq-0.hUGgcQ.ScButtonIcon-sc-9yap0r-0.hsbCAn"
+  );
+
+  deleteButton!.addEventListener("click", () => {
+    deleteVideo(videoData.url);
+    displayVideos();
+  });
 
   return videoContainer;
 };

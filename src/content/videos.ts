@@ -28,3 +28,11 @@ export const addVideo = (videoData: videoData) => {
 
   localStorage.setItem("twitchVideosToWatchLater", JSON.stringify(videos));
 };
+
+export const deleteVideo = (videoUrl: string) => {
+  const videos = getVideos();
+
+  const updatedVideos = videos.filter((video) => video.url !== videoUrl);
+
+  localStorage.setItem("twitchVideosToWatchLater", JSON.stringify(updatedVideos));
+};
