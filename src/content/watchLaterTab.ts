@@ -1,6 +1,7 @@
+import { deselectElement, selectElement } from "../utils/tabListSelection";
 import { displayVideos } from "./displayVideos";
 
-const createWatchLaterTab = (onClick: () => void) => {
+const createWatchLaterTab = () => {
   const watchLaterTab = document.createElement("li");
   watchLaterTab.setAttribute("role", "presentation");
   watchLaterTab.classList.add("InjectLayout-sc-1i43xsx-0", "UZpUA");
@@ -17,7 +18,24 @@ const createWatchLaterTab = (onClick: () => void) => {
     "jCwrcb"
   );
 
-  watchLaterTab.addEventListener("click", onClick);
+  watchLaterTab.addEventListener("click", () => {
+    history.pushState({}, "", "/directory/following/watch-later");
+
+
+    // deselect all links 
+    const tablist = document.querySelector(
+      "ul[role='tablist']"
+    ) as HTMLButtonElement | null;
+
+    if (tablist) {
+      const tabLinks = tablist.querySelectorAll("a");
+      tabLinks.forEach((tabLink) => deselectElement(tabLink));
+    }
+
+    selectElement(watchLaterLink);
+
+    displayVideos();
+  });
 
   const watchLaterContent = document.createElement("div");
   watchLaterContent.classList.add("Layout-sc-1xcs6mc-0", "lakwgB");
@@ -35,22 +53,22 @@ const createWatchLaterTab = (onClick: () => void) => {
   );
   watchLaterTitle.textContent = "Watch Later";
 
+  const watchLaterActiveTabIndicator = document.createElement("div");
+  watchLaterActiveTabIndicator.classList.add("Layout-sc-1xcs6mc-0", "kJrZQz");
+
+  watchLaterActiveTabIndicator.innerHTML = `<div data-test-selector="ACTIVE_TAB_INDICATOR" class="ScActiveIndicator-sc-17qqzr5-1 jSIinO" style="display: none;"></div>`;
+
   watchLaterTextWrapper.appendChild(watchLaterTitle);
   watchLaterContent.appendChild(watchLaterTextWrapper);
+  watchLaterContent.appendChild(watchLaterActiveTabIndicator);
   watchLaterLink.appendChild(watchLaterContent);
   watchLaterTab.appendChild(watchLaterLink);
 
   return watchLaterTab;
 };
 
-const handleTabClick = () => {
-  history.pushState({}, "", "/directory/following/watch-later");
-
-  displayVideos();
-};
-
 export const injectWatchLaterTab = (tabList: Element) => {
-  const watchLaterTab = createWatchLaterTab(handleTabClick);
+  const watchLaterTab = createWatchLaterTab();
 
   tabList.appendChild(watchLaterTab);
 };

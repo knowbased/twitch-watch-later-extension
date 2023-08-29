@@ -1,4 +1,5 @@
 import { observeUrl } from "../utils/observeUrl";
+import { deselectElement } from "../utils/tabListSelection";
 import { clearVideos, displayVideos } from "./displayVideos";
 import { saveVOD } from "./saveVOD";
 import { createWatchLaterButtonElement } from "./watchLaterButton";
@@ -39,9 +40,17 @@ const onUrlChange = (newUrl: string) => {
     console.log("following");
 
     clearVideos();
-    
+
     if (newUrl.includes("watch-later")) {
       displayVideos();
+    } else {
+      const watchLaterLink = document.querySelector(
+        'a[data-a-target="watch-later-tab"]'
+      ) as HTMLElement;
+
+      if (watchLaterLink) {
+        deselectElement(watchLaterLink);
+      }
     }
 
     const observer = new MutationObserver((mutationsList) => {
