@@ -1,5 +1,5 @@
 import { observeUrl } from "../utils/observeUrl";
-import { deselectElement } from "../utils/tabListSelection";
+import { deselectElement, selectCurrentTab } from "../utils/tabListSelection";
 import { clearVideos, displayVideos } from "./displayVideos";
 import { saveVOD } from "./saveVOD";
 import { createWatchLaterButtonElement } from "./watchLaterButton";
@@ -40,6 +40,7 @@ const onUrlChange = (newUrl: string) => {
     console.log("following");
 
     clearVideos();
+    selectCurrentTab();
 
     if (newUrl.includes("watch-later")) {
       displayVideos();

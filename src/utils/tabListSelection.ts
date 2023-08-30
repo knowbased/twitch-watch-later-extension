@@ -24,8 +24,6 @@ export const selectElement = (element: HTMLElement) => {
   if (activeTabIndicator) {
     activeTabIndicator.style.display = "block";
   }
-
-  console.log("après", element);
 };
 
 export const deselectElement = (element: HTMLElement) => {
@@ -53,4 +51,37 @@ export const deselectElement = (element: HTMLElement) => {
   if (activeTabIndicator) {
     activeTabIndicator.style.display = "none";
   }
+};
+
+export const selectCurrentTab = () => {
+  const url = window.location.href;
+
+  const urlCategory = url.split("/")[5];
+
+  let tabIndex = 0;
+
+  switch (urlCategory) {
+    case undefined:
+      tabIndex = 0;
+      break;
+    case "live":
+      tabIndex = 1;
+      break;
+    case "videos":
+      tabIndex = 2;
+      break;
+    case "games":
+      tabIndex = 3;
+      break;
+    case "channels":
+      tabIndex = 4;
+      break;
+    case "watch-later":
+      tabIndex = 5;
+      break;
+  }
+
+  const tabListLinks = document.querySelectorAll("ul[role='tablist'] a");
+
+  selectElement(tabListLinks[tabIndex] as HTMLElement);
 };
