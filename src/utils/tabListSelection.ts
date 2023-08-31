@@ -1,4 +1,8 @@
-const TWITCH_PURPLE_COLOR = "#bf94ff";
+import {
+  ACTIVE_TAB_INDICATOR_SELECTOR,
+  TABLINK_SELECTOR,
+  TWITCH_PURPLE_COLOR,
+} from "../style/CSSVariables";
 
 export const selectElement = (element: HTMLElement) => {
   element.style.color = TWITCH_PURPLE_COLOR;
@@ -18,7 +22,7 @@ export const selectElement = (element: HTMLElement) => {
   }
 
   const activeTabIndicator = element.querySelector(
-    '[data-test-selector="ACTIVE_TAB_INDICATOR"]'
+    ACTIVE_TAB_INDICATOR_SELECTOR
   ) as HTMLElement;
 
   if (activeTabIndicator) {
@@ -45,7 +49,7 @@ export const deselectElement = (element: HTMLElement) => {
     textWrapperDiv.classList.add("iIZLZw");
   }
   const activeTabIndicator = element.querySelector(
-    '[data-test-selector="ACTIVE_TAB_INDICATOR"]'
+    ACTIVE_TAB_INDICATOR_SELECTOR
   ) as HTMLElement;
 
   if (activeTabIndicator) {
@@ -81,7 +85,7 @@ export const selectCurrentTab = () => {
       break;
   }
 
-  const tabListLinks = document.querySelectorAll("ul[role='tablist'] a");
+  const tabListLinks = document.querySelectorAll(TABLINK_SELECTOR);
 
   selectElement(tabListLinks[tabIndex] as HTMLElement);
 };

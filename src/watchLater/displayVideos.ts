@@ -1,4 +1,13 @@
-import { deleteVideo, getVideos, videoData } from "./videos";
+import {
+  VIDEO_CHANNEL_AVATAR_IMAGE_SELECTOR,
+  VIDEO_CHANNEL_LINK_SELECTOR,
+  VIDEO_DELETE_BUTTON_SELECTOR,
+  VIDEO_GAME_LINK_SELECTOR,
+  VIDEO_THUMBNAIL_LINK_SELECTOR,
+  VIDEO_TITLE_LINK_SELECTOR,
+  WATCH_LATER_CONTAINER_SELECTOR,
+} from "../style/CSSVariables";
+import { deleteVideo, getVideos, videoData } from "./videoStorage";
 
 const createSectionTitle = (title: string) => {
   const sectionHeader = document.createElement("header");
@@ -117,44 +126,42 @@ const createVideoElement = (videoData: videoData) => {
 </div>`;
 
   const titleLink = videoContainer.querySelector<HTMLAnchorElement>(
-    "a.ScCoreLink-sc-16kq0mq-0.eYjhIv.ScCoreLink-sc-bhsr9c-0.jYyMcQ.tw-link"
+    VIDEO_TITLE_LINK_SELECTOR
   );
 
   const previewCardLink = videoContainer.querySelector<HTMLAnchorElement>(
-    'a[data-a-target="preview-card-image-link"]'
+    VIDEO_THUMBNAIL_LINK_SELECTOR
   );
 
-  previewCardLink!.href = videoData.url;
-
-  titleLink!.href = videoData.url;
-
-  const title = titleLink!.querySelector("h3");
-
-  title!.textContent = videoData.title;
-  title!.title = videoData.title;
-
   const channelLink = videoContainer.querySelector<HTMLAnchorElement>(
-    'a[data-test-selector="ChannelLink"].ScCoreLink-sc-16kq0mq-0.eYjhIv.tw-link'
+    VIDEO_CHANNEL_LINK_SELECTOR
   );
 
   const channelAvatarElement = videoContainer.querySelector<HTMLImageElement>(
-    "img.InjectLayout-sc-1i43xsx-0.bEwPpb.tw-image.tw-image-avatar"
+    VIDEO_CHANNEL_AVATAR_IMAGE_SELECTOR
   );
+
+  const categoryLink = videoContainer.querySelector<HTMLAnchorElement>(
+    VIDEO_GAME_LINK_SELECTOR
+  );
+
+  const deleteButton = videoContainer.querySelector(
+    VIDEO_DELETE_BUTTON_SELECTOR
+  );
+
+  previewCardLink!.href = videoData.url;
+  titleLink!.href = videoData.url;
+
+  const title = titleLink!.querySelector("h3");
+  title!.textContent = videoData.title;
+  title!.title = videoData.title;
 
   channelLink!.href = videoData.channel.url;
   channelLink!.textContent = videoData.channel.name;
   channelAvatarElement!.src = videoData.channel.thumbnail;
 
-  const categoryLink = videoContainer.querySelector<HTMLAnchorElement>(
-    'a[data-a-target="preview-card-game-link"]'
-  );
-
   categoryLink!.href = videoData.category.url;
   categoryLink!.textContent = videoData.category.name;
-
-  const deleteButton = videoContainer.querySelector(
-    ".ScCoreButton-sc-ocjdkq-0.hUGgcQ.ScButtonIcon-sc-9yap0r-0.hsbCAn"
-  );
 
   deleteButton!.addEventListener("click", () => {
     deleteVideo(videoData.url);
@@ -170,6 +177,30 @@ const clearSection = (section: HTMLElement) => {
   children.forEach((child) => {
     const htmlChild = child as HTMLElement;
     htmlChild.style.display = "none";
+  });
+};
+
+export const clearVideos = () => {
+  // remove added content
+  const watchLaterVideoContainer = document.querySelector(
+    WATCH_LATER_CONTAINER_SELECTOR
+  );
+
+  watchLaterVideoContainer?.remove();
+
+  const header = document.querySelector('header[aria-label="Watch later"]');
+  header?.remove();
+
+  // display the previously hidden content
+  const section = document.getElementById("following-page-main-content");
+
+  if (!section) return;
+
+  const children = Array.from(section.children);
+
+  children.forEach((child) => {
+    const htmlChild = child as HTMLElement;
+    htmlChild.style.display = "block";
   });
 };
 
@@ -194,7 +225,7 @@ export const displayVideos = () => {
     "ScTower-sc-1sjzzes-0",
     "czzjEE",
     "tw-tower",
-    "watch-later-video-container"
+    WATCH_LATER_CONTAINER_SELECTOR
   );
 
   videoSection.appendChild(videoContainer);
@@ -202,29 +233,5 @@ export const displayVideos = () => {
   videos.forEach((video) => {
     const videoElement = createVideoElement(video);
     videoContainer.appendChild(videoElement);
-  });
-};
-
-export const clearVideos = () => {
-  // remove added content
-  const watchLaterVideoContainer = document.querySelector(
-    ".watch-later-video-container"
-  );
-
-  watchLaterVideoContainer?.remove();
-
-  const header = document.querySelector('header[aria-label="Watch later"]');
-  header?.remove();
-
-  // display the previously hidden content
-  const section = document.getElementById("following-page-main-content");
-
-  if (!section) return;
-
-  const children = Array.from(section.children);
-
-  children.forEach((child) => {
-    const htmlChild = child as HTMLElement;
-    htmlChild.style.display = "block";
   });
 };
