@@ -186,6 +186,8 @@ export const clearVideos = () => {
     WATCH_LATER_CONTAINER_SELECTOR
   );
 
+  console.log("remove", watchLaterVideoContainer);
+
   watchLaterVideoContainer?.remove();
 
   const header = document.querySelector('header[aria-label="Watch later"]');
@@ -225,7 +227,7 @@ export const displayVideos = () => {
     "ScTower-sc-1sjzzes-0",
     "czzjEE",
     "tw-tower",
-    WATCH_LATER_CONTAINER_SELECTOR
+    "watch-later-video-container"
   );
 
   videoSection.appendChild(videoContainer);
