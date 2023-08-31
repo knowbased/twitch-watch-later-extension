@@ -17,6 +17,8 @@ const createWatchLaterTab = () => {
     "InjectLayout-sc-1i43xsx-0",
     "jCwrcb"
   );
+  
+  watchLaterLink.style.cursor = "pointer";  
 
   watchLaterTab.addEventListener("click", () => {
     history.pushState({}, "", "/directory/following/watch-later");
