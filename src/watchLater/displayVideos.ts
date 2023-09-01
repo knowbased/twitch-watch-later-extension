@@ -186,8 +186,6 @@ export const clearVideos = () => {
     WATCH_LATER_CONTAINER_SELECTOR
   );
 
-  console.log("remove", watchLaterVideoContainer);
-
   watchLaterVideoContainer?.remove();
 
   const header = document.querySelector('header[aria-label="Watch later"]');

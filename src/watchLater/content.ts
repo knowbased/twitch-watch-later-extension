@@ -1,7 +1,4 @@
-import {
-  TABLIST_SELECTOR,
-  VOD_SHARE_BUTTON_SELECTOR,
-} from "../style/CSSVariables";
+import { TABLIST_SELECTOR } from "../style/CSSVariables";
 import { observeUrl } from "../utils/observeUrl";
 import { deselectElement, selectCurrentTab } from "../utils/tabListSelection";
 import { clearVideos, displayVideos } from "./displayVideos";
@@ -9,12 +6,11 @@ import { injectWatchLaterButton } from "./watchLaterButton";
 import { injectWatchLaterTab } from "./watchLaterTab";
 
 const handleShareButtonMutation = (shareButton: Element) => {
-  const parentContainer = shareButton.closest(".fbIPLy");
+  const watchLaterButton = document.querySelector(
+    'button[aria-label="Watch later"]'
+  );
 
-  // watchlater button is already in DOM
-  if (!parentContainer || parentContainer.childNodes.length > 2) return;
-
-  injectWatchLaterButton(parentContainer);
+  if (!watchLaterButton) injectWatchLaterButton(shareButton);
 };
 
 const handleTabListMutation = (tabList: Element) => {
@@ -54,8 +50,9 @@ const handleVODPage = () => {
     mutationsList.forEach((mutation) => {
       if (mutation.target instanceof Element) {
         const shareButton = mutation.target.querySelector(
-          VOD_SHARE_BUTTON_SELECTOR
-        ) as HTMLButtonElement | null;
+          "#live-channel-stream-information .metadata-layout__split-top button"
+        );
+
         if (shareButton) {
           handleShareButtonMutation(shareButton);
         }

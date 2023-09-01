@@ -1,64 +1,64 @@
-const BUTTON_CONTAINER_CLASS = "Layout-sc-1xcs6mc-0 eVaozA";
-
 import { getClockSVG } from "../utils/getClockSVG";
 import { saveVOD } from "./saveVOD";
 
-export const createVODButtonElement = (
+export const createButtonElementFromCopy = (
+  layoutToCopy: Element,
   buttonText: string,
   clickhandler: () => void
-): HTMLElement => {
-  const buttonContainer = document.createElement("div");
-  buttonContainer.className = BUTTON_CONTAINER_CLASS;
+) => {
+  const vodButtonLayout = layoutToCopy.cloneNode(true) as HTMLElement;
 
-  const buttonLayout = document.createElement("div");
-  buttonLayout.className = "Layout-sc-1xcs6mc-0 crbrgc";
+  const vodButton = vodButtonLayout.querySelector(
+    "button"
+  ) as HTMLButtonElement | null;
+  const labelElement = vodButtonLayout.querySelector(
+    '[data-a-target="tw-core-button-label-text"]'
+  );
 
-  const buttonWrapper = document.createElement("div");
-  buttonWrapper.dataset.testSelector =
-    "toggle-balloon-wrapper__mouse-enter-detector";
-  buttonWrapper.style.display = "inherit";
+  if (!vodButton || !labelElement) {
+    throw new Error("Button or label element not found");
+  }
 
-  const injectLayout = document.createElement("div");
-  injectLayout.className = "InjectLayout-sc-1i43xsx-0 dVOhMf";
+  labelElement.textContent = buttonText;
+  vodButton.setAttribute("aria-label", buttonText);
 
-  const button = document.createElement("button");
-  button.className =
-    "ScCoreButton-sc-ocjdkq-0 ScCoreButtonSecondary-sc-ocjdkq-2 ibtYyW bTKXKk";
-  button.setAttribute("aria-label", buttonText);
-
-  const buttonLabel = document.createElement("div");
-  buttonLabel.className = "ScCoreButtonLabel-sc-s7h2b7-0 irroFV";
-
-  const layoutDiv = document.createElement("div");
-  layoutDiv.className = "Layout-sc-1xcs6mc-0 gzBpxy";
-
-  const buttonIcon = document.createElement("div");
-  buttonIcon.className =
-    "ScCoreButtonIcon-sc-ypak37-0 nHEIR tw-core-button-icon";
+  vodButton.addEventListener("click", clickhandler);
 
   const svgElement = getClockSVG();
+  const vodButtonSVG = vodButton.querySelector("svg");
 
-  buttonIcon.appendChild(svgElement);
-  layoutDiv.appendChild(buttonIcon);
-  buttonLabel.appendChild(layoutDiv);
-  buttonLabel.appendChild(document.createTextNode(buttonText));
-  button.appendChild(buttonLabel);
-  injectLayout.appendChild(button);
-  buttonWrapper.appendChild(injectLayout);
-  buttonWrapper.appendChild(button);
-  buttonLayout.appendChild(buttonWrapper);
-  buttonContainer.appendChild(buttonLayout);
+  if (vodButtonSVG) {
+    vodButtonSVG.parentElement?.replaceChild(svgElement, vodButtonSVG);
+  } else {
+    vodButton.appendChild(svgElement);
+  }
 
-  button.addEventListener("click", clickhandler);
-
-  return buttonContainer;
+  return vodButtonLayout;
 };
 
-export const injectWatchLaterButton = (container: Element) => {
-  const watchLaterButtonContainer = createVODButtonElement(
+export const injectWatchLaterButton = (shareButton: Element) => {
+  // get all the parent elements
+  const shareButtonLayout =
+    shareButton.parentElement?.parentElement?.parentElement?.parentElement;
+
+  if (!shareButtonLayout) {
+    throw new Error("Share button layout not found");
+  }
+
+  const buttonsContainer = shareButtonLayout.parentElement;
+
+  if (!buttonsContainer) {
+    throw new Error("Buttons container not found");
+  }
+
+  const watchLaterButtonContainer = createButtonElementFromCopy(
+    shareButtonLayout,
     "Watch later",
     saveVOD
   );
 
-  container.insertBefore(watchLaterButtonContainer, container.firstChild);
+  buttonsContainer.insertBefore(
+    watchLaterButtonContainer,
+    buttonsContainer.firstChild
+  );
 };

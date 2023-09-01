@@ -22,7 +22,7 @@ const handleTabClick = (tabLink: HTMLAnchorElement, tabUrl: string) => {
 const createFollowingTab = (tabName: string, tabUrl: string) => {
   const tabElement = document.createElement("li");
   tabElement.setAttribute("role", "presentation");
-  tabElement.classList.add("InjectLayout-sc-1i43xsx-0", "UZpUA");
+  tabElement.classList.add("InjectLayout-sc-1i43xsx-0", "ciQoHd");
 
   const tabLink = document.createElement("a");
   tabLink.setAttribute("data-a-target", "watch-later-tab");
@@ -31,9 +31,9 @@ const createFollowingTab = (tabName: string, tabUrl: string) => {
   tabLink.setAttribute("tabindex", "-1");
   tabLink.classList.add(
     "ScInteractive-sc-iekec1-0",
-    "eGCwRl",
+    "bScHqc",
     "InjectLayout-sc-1i43xsx-0",
-    "jCwrcb"
+    "bFNmby"
   );
 
   tabLink.style.cursor = "pointer";
@@ -43,17 +43,17 @@ const createFollowingTab = (tabName: string, tabUrl: string) => {
   });
 
   const tabContent = document.createElement("div");
-  tabContent.classList.add("Layout-sc-1xcs6mc-0", "lakwgB");
+  tabContent.classList.add("Layout-sc-1xcs6mc-0", "curSYE");
 
   const tabTextWrapper = document.createElement("div");
-  tabTextWrapper.classList.add("ScTextWrapper-sc-iekec1-1", "iIZLZw");
+  tabTextWrapper.classList.add("ScTextWrapper-sc-iekec1-1", "kzdBhB");
 
   const tabTitle = document.createElement("p");
   tabTitle.classList.add(
     "CoreText-sc-1txzju1-0",
     "ScTitleText-sc-d9mj2s-0",
-    "jKVhlu",
-    "igzOaC",
+    "bthLuv",
+    "iaMqYH",
     "tw-title"
   );
   tabTitle.textContent = tabName;
