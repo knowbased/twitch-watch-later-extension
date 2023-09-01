@@ -19,7 +19,6 @@ export const VIDEO_DELETE_BUTTON_SELECTOR =
   ".ScCoreButton-sc-ocjdkq-0.hUGgcQ.ScButtonIcon-sc-9yap0r-0.hsbCAn";
 
 // VOD Selector
-export const VOD_SHARE_BUTTON_SELECTOR = 'button[aria-label="Partager"]';
 export const VOD_TITLE_SELECTOR = 'h2[data-a-target="stream-title"]';
 
 // Watch Later Selector

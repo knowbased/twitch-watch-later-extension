@@ -1,4 +1,4 @@
-import { VIDEO_CHANNEL_AVATAR_IMAGE_SELECTOR, VOD_TITLE_SELECTOR } from "../style/CSSVariables";
+import { VOD_TITLE_SELECTOR } from "../style/CSSVariables";
 import { addVideo } from "./videoStorage";
 
 export const saveVOD = () => {
@@ -8,7 +8,7 @@ export const saveVOD = () => {
   );
 
   const channelThumbnailElement = document.querySelector<HTMLImageElement>(
-    `#live-channel-stream-information ${VIDEO_CHANNEL_AVATAR_IMAGE_SELECTOR}`
+    "#live-channel-stream-information img"
   );
 
   const categoryLink = document.querySelector<HTMLAnchorElement>(
@@ -21,8 +21,7 @@ export const saveVOD = () => {
     !channelThumbnailElement ||
     !categoryLink
   ) {
-    console.error("Could not save video: Missing or invalid data");
-    return;
+    throw new Error("Could not save video: Missing or invalid data");
   }
 
   const videoTitle = videoTitleElement.getAttribute("title") || "";
