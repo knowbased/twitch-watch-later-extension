@@ -1,8 +1,11 @@
 import { TABLIST_SELECTOR } from "../style/CSSVariables";
-import { deselectElement, selectElement } from "../utils/tabListSelection";
+import { selectElement, deselectElement } from "../utils/tabListSelection";
 import { displayVideos } from "./displayVideos";
 
-const handleTabClick = (tabLink: HTMLAnchorElement, tabUrl: string) => {
+const handleTabClick = (
+  watchLaterTabLink: HTMLAnchorElement,
+  tabUrl: string
+) => {
   history.pushState({}, "", tabUrl);
 
   const tablist = document.querySelector(
@@ -14,66 +17,49 @@ const handleTabClick = (tabLink: HTMLAnchorElement, tabUrl: string) => {
     tabLinks.forEach((link) => deselectElement(link));
   }
 
-  selectElement(tabLink);
+  selectElement(watchLaterTabLink);
 
   displayVideos();
 };
 
-const createFollowingTab = (tabName: string, tabUrl: string) => {
-  const tabElement = document.createElement("li");
-  tabElement.setAttribute("role", "presentation");
-  tabElement.classList.add("InjectLayout-sc-1i43xsx-0", "ciQoHd");
+const createFollowingTabFromCopy = (
+  tabToCopy: Element,
+  tabName: string,
+  tabUrl: string
+) => {
+  const tabElement = tabToCopy.cloneNode(true) as HTMLLIElement;
 
-  const tabLink = document.createElement("a");
-  tabLink.setAttribute("data-a-target", "watch-later-tab");
-  tabLink.setAttribute("role", "tab");
-  tabLink.setAttribute("aria-selected", "false");
-  tabLink.setAttribute("tabindex", "-1");
-  tabLink.classList.add(
-    "ScInteractive-sc-iekec1-0",
-    "bScHqc",
-    "InjectLayout-sc-1i43xsx-0",
-    "bFNmby"
-  );
+  const tabLink = tabElement.querySelector("a") as HTMLAnchorElement;
 
-  tabLink.style.cursor = "pointer";
+  const tabContent = tabLink.querySelector("p") as HTMLParagraphElement;
 
+  tabElement.setAttribute("data-index", "5");
   tabElement.addEventListener("click", () => {
     handleTabClick(tabLink, tabUrl);
   });
 
-  const tabContent = document.createElement("div");
-  tabContent.classList.add("Layout-sc-1xcs6mc-0", "curSYE");
+  tabLink.setAttribute("data-a-target", "watch-later-tab");
+  tabLink.removeAttribute("href");
+  tabLink.style.cursor = "pointer";
 
-  const tabTextWrapper = document.createElement("div");
-  tabTextWrapper.classList.add("ScTextWrapper-sc-iekec1-1", "kzdBhB");
-
-  const tabTitle = document.createElement("p");
-  tabTitle.classList.add(
-    "CoreText-sc-1txzju1-0",
-    "ScTitleText-sc-d9mj2s-0",
-    "bthLuv",
-    "iaMqYH",
-    "tw-title"
-  );
-  tabTitle.textContent = tabName;
-
-  const tabActiveTabIndicator = document.createElement("div");
-  tabActiveTabIndicator.classList.add("Layout-sc-1xcs6mc-0", "kJrZQz");
-
-  tabActiveTabIndicator.innerHTML = `<div data-test-selector="ACTIVE_TAB_INDICATOR" class="ScActiveIndicator-sc-17qqzr5-1 jSIinO" style="display: none;"></div>`;
-
-  tabTextWrapper.appendChild(tabTitle);
-  tabContent.appendChild(tabTextWrapper);
-  tabContent.appendChild(tabActiveTabIndicator);
-  tabLink.appendChild(tabContent);
-  tabElement.appendChild(tabLink);
+  tabContent.textContent = tabName;
 
   return tabElement;
 };
 
 export const injectWatchLaterTab = (tabList: Element) => {
-  const watchLaterTab = createFollowingTab(
+  const followingTabLink = tabList.querySelectorAll(
+    "li a[aria-selected='false']"
+  )[1];
+
+  const followingTab = followingTabLink?.parentElement;
+
+  if (!followingTab || !followingTabLink) {
+    throw new Error("Following tab not found");
+  }
+
+  const watchLaterTab = createFollowingTabFromCopy(
+    followingTab,
     "Watch later",
     "/directory/following/watch-later"
   );
