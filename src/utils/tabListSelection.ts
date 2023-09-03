@@ -1,63 +1,96 @@
-import {
-  ACTIVE_TAB_INDICATOR_SELECTOR,
-  TABLINK_SELECTOR,
-  TWITCH_PURPLE_COLOR,
-} from "../style/CSSVariables";
+import { TABLINK_SELECTOR } from "../style/CSSVariables";
+import { replaceAllElementClasses } from "./replaceClasses";
 
 export const selectElement = (element: HTMLElement) => {
-  element.style.color = TWITCH_PURPLE_COLOR;
+  const selectedElement = document.querySelector(
+    `${TABLINK_SELECTOR}[aria-selected="true"]`
+  );
+
+  if (!selectedElement) {
+    throw new Error("No selected element found");
+  }
+
   element.setAttribute("aria-selected", "true");
-  element.setAttribute("tabindex", "0");
 
-  const layoutDiv = element.querySelector(".Layout-sc-1xcs6mc-0");
-  if (layoutDiv) {
-    layoutDiv.classList.remove("lakwgB");
-    layoutDiv.classList.add("jEhsPY");
-  }
+  replaceAllElementClasses(element, selectedElement);
 
-  const textWrapperDiv = element.querySelector(".ScTextWrapper-sc-iekec1-1");
-  if (textWrapperDiv) {
-    textWrapperDiv.classList.remove("iIZLZw");
-    textWrapperDiv.classList.add("kNfdem");
-  }
-
-  const activeTabIndicator = element.querySelector(
-    ACTIVE_TAB_INDICATOR_SELECTOR
+  const elementActiveTabIndicator = element.querySelector(
+    'div[data-test-selector="ACTIVE_TAB_INDICATOR"]'
   ) as HTMLElement;
 
-  if (activeTabIndicator) {
-    activeTabIndicator.style.display = "block";
+  if (elementActiveTabIndicator) {
+    elementActiveTabIndicator.style.display = "block";
+    return;
   }
+
+  const selectedElementActiveTabIndicator = selectedElement.querySelector(
+    'div[data-test-selector="ACTIVE_TAB_INDICATOR"]'
+  );
+
+  const selectedElementActiveTabIndicatorParent =
+    selectedElementActiveTabIndicator?.parentElement;
+
+  if (
+    !selectedElementActiveTabIndicator ||
+    !selectedElementActiveTabIndicatorParent
+  ) {
+    throw new Error("No selected element active tab indicator found");
+  }
+
+  const selectedElementActiveTabIndicatorClone =
+    selectedElementActiveTabIndicator.cloneNode(true) as HTMLElement;
+
+  const elementActiveTabIndicatorParent = element.querySelector(
+    `div[class="${selectedElementActiveTabIndicatorParent.className}"]`
+  );
+
+  elementActiveTabIndicatorParent?.appendChild(
+    selectedElementActiveTabIndicatorClone
+  );
 };
 
 export const deselectElement = (element: HTMLElement) => {
-  element.style.color = "inherit";
+  const unSelectedElement = document.querySelector(
+    `${TABLINK_SELECTOR}[aria-selected="false"]`
+  );
+
+  if (!unSelectedElement) {
+    throw new Error("No unselected element found");
+  }
+
   element.setAttribute("aria-selected", "false");
-  element.setAttribute("tabindex", "-1");
+  replaceAllElementClasses(element, unSelectedElement);
 
-  const layoutDiv = element.querySelector(".Layout-sc-1xcs6mc-0");
-
-  if (layoutDiv) {
-    layoutDiv.classList.remove("jEhsPY");
-    layoutDiv.classList.add("lakwgB");
-  }
-
-  const textWrapperDiv = element.querySelector(".ScTextWrapper-sc-iekec1-1");
-
-  if (textWrapperDiv) {
-    textWrapperDiv.classList.remove("kNfdem");
-    textWrapperDiv.classList.add("iIZLZw");
-  }
-  const activeTabIndicator = element.querySelector(
-    ACTIVE_TAB_INDICATOR_SELECTOR
+  const elementActiveTabIndicator = element.querySelector(
+    'div[data-test-selector="ACTIVE_TAB_INDICATOR"]'
   ) as HTMLElement;
 
-  if (activeTabIndicator) {
-    activeTabIndicator.style.display = "none";
+  if (elementActiveTabIndicator) {
+    elementActiveTabIndicator.style.display = "none";
   }
+
+  // element.style.color = "inherit";
+  // element.setAttribute("aria-selected", "false");
+  // element.setAttribute("tabindex", "-1");
+  // const layoutDiv = element.querySelector(".Layout-sc-1xcs6mc-0");
+  // if (layoutDiv) {
+  //   layoutDiv.classList.remove("jEhsPY");
+  //   layoutDiv.classList.add("lakwgB");
+  // }
+  // const textWrapperDiv = element.querySelector(".ScTextWrapper-sc-iekec1-1");
+  // if (textWrapperDiv) {
+  //   textWrapperDiv.classList.remove("kNfdem");
+  //   textWrapperDiv.classList.add("iIZLZw");
+  // }
+  // const activeTabIndicator = element.querySelector(
+  //   ACTIVE_TAB_INDICATOR_SELECTOR
+  // ) as HTMLElement;
+  // if (activeTabIndicator) {
+  //   activeTabIndicator.style.display = "none";
+  // }
 };
 
-export const selectCurrentTab = () => {
+export const getCurrentTab = () => {
   const url = window.location.href;
 
   const urlCategory = url.split("/")[5];
@@ -87,5 +120,5 @@ export const selectCurrentTab = () => {
 
   const tabListLinks = document.querySelectorAll(TABLINK_SELECTOR);
 
-  selectElement(tabListLinks[tabIndex] as HTMLElement);
+  return tabListLinks[tabIndex] as HTMLElement;
 };

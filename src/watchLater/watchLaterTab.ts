@@ -1,25 +1,27 @@
 import { TABLIST_SELECTOR } from "../style/CSSVariables";
-import { selectElement, deselectElement } from "../utils/tabListSelection";
+import {
+  selectElement,
+  deselectElement,
+  getCurrentTab,
+} from "../utils/tabListSelection";
 import { displayVideos } from "./displayVideos";
 
 const handleTabClick = (
   watchLaterTabLink: HTMLAnchorElement,
   tabUrl: string
 ) => {
-  history.pushState({}, "", tabUrl);
+  selectElement(watchLaterTabLink);
 
   const tablist = document.querySelector(
     TABLIST_SELECTOR
   ) as HTMLUListElement | null;
 
   if (tablist) {
-    const tabLinks = tablist.querySelectorAll("a");
-    tabLinks.forEach((link) => deselectElement(link));
+    deselectElement(getCurrentTab());
   }
 
-  selectElement(watchLaterTabLink);
-
   displayVideos();
+  history.pushState({}, "", tabUrl);
 };
 
 const createFollowingTabFromCopy = (

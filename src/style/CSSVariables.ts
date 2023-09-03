@@ -23,6 +23,3 @@ export const VOD_TITLE_SELECTOR = 'h2[data-a-target="stream-title"]';
 
 // Watch Later Selector
 export const WATCH_LATER_CONTAINER_SELECTOR = ".watch-later-video-container";
-
-// Color Variables
-export const TWITCH_PURPLE_COLOR = "#bf94ff";

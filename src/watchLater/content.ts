@@ -1,6 +1,10 @@
 import { TABLIST_SELECTOR } from "../style/CSSVariables";
 import { observeUrl } from "../utils/observeUrl";
-import { deselectElement, selectCurrentTab } from "../utils/tabListSelection";
+import {
+  deselectElement,
+  getCurrentTab,
+  selectElement,
+} from "../utils/tabListSelection";
 import { clearVideos, displayVideos } from "./displayVideos";
 import { injectWatchLaterButton } from "./watchLaterButton";
 import { injectWatchLaterTab } from "./watchLaterTab";
@@ -22,7 +26,7 @@ const handleTabListMutation = (tabList: Element) => {
 
 const handleFollowingPage = (newUrl: string) => {
   clearVideos();
-  selectCurrentTab();
+  selectElement(getCurrentTab());
 
   if (newUrl.includes("watch-later")) {
     displayVideos();
@@ -30,7 +34,6 @@ const handleFollowingPage = (newUrl: string) => {
     const watchLaterLink = document.querySelector(
       'a[data-a-target="watch-later-tab"]'
     ) as HTMLElement;
-
     if (watchLaterLink) {
       deselectElement(watchLaterLink);
     }
