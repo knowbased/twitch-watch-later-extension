@@ -4,31 +4,37 @@ import {
   deselectElement,
   getCurrentTab,
 } from "../utils/tabListSelection";
-import { displayVideos } from "./displayVideos";
+import { clearVideos, displayVideos } from "./displayVideos";
 
-const handleTabClick = (
-  watchLaterTabLink: HTMLAnchorElement,
-  tabUrl: string
-) => {
-  selectElement(watchLaterTabLink);
+const handleTabClick = (watchLaterTabLink: HTMLAnchorElement) => {
+  const videoTabElement = document.querySelectorAll(
+    "a[role='tab']"
+  )[2] as HTMLAnchorElement | null;
 
-  const tablist = document.querySelector(
-    TABLIST_SELECTOR
-  ) as HTMLUListElement | null;
+  if (!videoTabElement) throw new Error("Could not find video tab");
 
-  if (tablist) {
-    deselectElement(getCurrentTab());
-  }
+  videoTabElement.click();
+  videoTabElement.addEventListener("click", () => {
+    clearVideos();
+    selectElement(getCurrentTab());
+    deselectElement(watchLaterTabLink);
+  });
 
-  displayVideos();
-  history.pushState({}, "", tabUrl);
+  setTimeout(() => {
+    displayVideos();
+
+    selectElement(watchLaterTabLink);
+    const tablist = document.querySelector(
+      TABLIST_SELECTOR
+    ) as HTMLUListElement | null;
+
+    if (tablist) {
+      deselectElement(getCurrentTab());
+    }
+  }, 2000);
 };
 
-const createFollowingTabFromCopy = (
-  tabToCopy: Element,
-  tabName: string,
-  tabUrl: string
-) => {
+const createFollowingTabFromCopy = (tabToCopy: Element, tabName: string) => {
   const tabElement = tabToCopy.cloneNode(true) as HTMLLIElement;
 
   const tabLink = tabElement.querySelector("a") as HTMLAnchorElement;
@@ -37,7 +43,7 @@ const createFollowingTabFromCopy = (
 
   tabElement.setAttribute("data-index", "5");
   tabElement.addEventListener("click", () => {
-    handleTabClick(tabLink, tabUrl);
+    handleTabClick(tabLink);
   });
 
   tabLink.setAttribute("data-a-target", "watch-later-tab");
@@ -60,11 +66,7 @@ export const injectWatchLaterTab = (tabList: Element) => {
     throw new Error("Following tab not found");
   }
 
-  const watchLaterTab = createFollowingTabFromCopy(
-    followingTab,
-    "Watch later",
-    "/directory/following/watch-later"
-  );
+  const watchLaterTab = createFollowingTabFromCopy(followingTab, "Watch later");
 
   tabList.appendChild(watchLaterTab);
 };

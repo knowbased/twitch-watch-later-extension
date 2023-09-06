@@ -67,28 +67,7 @@ export const deselectElement = (element: HTMLElement) => {
 
   if (elementActiveTabIndicator) {
     elementActiveTabIndicator.style.display = "none";
-  }
-
-  // element.style.color = "inherit";
-  // element.setAttribute("aria-selected", "false");
-  // element.setAttribute("tabindex", "-1");
-  // const layoutDiv = element.querySelector(".Layout-sc-1xcs6mc-0");
-  // if (layoutDiv) {
-  //   layoutDiv.classList.remove("jEhsPY");
-  //   layoutDiv.classList.add("lakwgB");
-  // }
-  // const textWrapperDiv = element.querySelector(".ScTextWrapper-sc-iekec1-1");
-  // if (textWrapperDiv) {
-  //   textWrapperDiv.classList.remove("kNfdem");
-  //   textWrapperDiv.classList.add("iIZLZw");
-  // }
-  // const activeTabIndicator = element.querySelector(
-  //   ACTIVE_TAB_INDICATOR_SELECTOR
-  // ) as HTMLElement;
-  // if (activeTabIndicator) {
-  //   activeTabIndicator.style.display = "none";
-  // }
-};
+  }};
 
 export const getCurrentTab = () => {
   const url = window.location.href;

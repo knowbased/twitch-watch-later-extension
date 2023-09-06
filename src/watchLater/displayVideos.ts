@@ -1,153 +1,47 @@
-import {
-  VIDEO_CHANNEL_AVATAR_IMAGE_SELECTOR,
-  VIDEO_CHANNEL_LINK_SELECTOR,
-  VIDEO_DELETE_BUTTON_SELECTOR,
-  VIDEO_GAME_LINK_SELECTOR,
-  VIDEO_THUMBNAIL_LINK_SELECTOR,
-  VIDEO_TITLE_LINK_SELECTOR,
-  WATCH_LATER_CONTAINER_SELECTOR,
-} from "../style/CSSVariables";
+import { WATCH_LATER_CONTAINER_ID } from "../style/CSSVariables";
+import { getXSVG } from "../utils/getXSVG";
 import { deleteVideo, getVideos, videoData } from "./videoStorage";
 
-const createSectionTitle = (title: string) => {
-  const sectionHeader = document.createElement("header");
+const createSectionHeaderFromCopy = (headerToCopy: Element, title: string) => {
+  const sectionHeader = headerToCopy.cloneNode(true) as HTMLElement;
   sectionHeader.setAttribute("aria-label", title);
 
-  const headerLayout = document.createElement("div");
-  headerLayout.classList.add("Layout-sc-1xcs6mc-0", "hrNxVf");
+  const sectionHeaderTitle = sectionHeader.querySelector("h2");
 
-  const sectionTitle = document.createElement("h2");
-  sectionTitle.setAttribute(
-    "data-a-target",
-    "followed-videos-continue-watching-header"
-  );
-  sectionTitle.classList.add("CoreText-sc-1txzju1-0", "dDJaVb");
-  sectionTitle.textContent = title;
+  if (!sectionHeaderTitle)
+    throw new Error("Could not find section header title");
 
-  headerLayout.appendChild(sectionTitle);
-  sectionHeader.appendChild(headerLayout);
+  sectionHeaderTitle.textContent = title;
+
   return sectionHeader;
 };
 
-const createVideoElement = (videoData: videoData) => {
-  const videoContainer = document.createElement("div");
-  videoContainer.classList.add("Layout-sc-1xcs6mc-0", "iPAXTU");
+const createVideoElementFromCopy = (
+  videoToCopy: Element,
+  videoData: videoData
+) => {
+  const videoElement = videoToCopy.cloneNode(true) as HTMLElement;
 
-  videoContainer.innerHTML = `<div>
-	<article data-a-target="followed-vod-0" class="Layout-sc-1xcs6mc-0 guHXLE">
-		<div class="Layout-sc-1xcs6mc-0 gUnRUD">
-			<div class="Layout-sc-1xcs6mc-0 ilDsKw">
-				<div class="ScTextWrapper-sc-10mto54-1 fwZpSK">
-					<div class="ScTextMargin-sc-10mto54-2 bcdHdk">
-						<div class="Layout-sc-1xcs6mc-0 idlTrs">
-							<a data-focusable="true" lines="1" class="ScCoreLink-sc-16kq0mq-0 eYjhIv ScCoreLink-sc-bhsr9c-0 jYyMcQ tw-link" href="/videos/1908011335"><h3 title="Gamers8 featuring Rocket League — Day 2 — Group Stage — Stream B" class="CoreText-sc-1txzju1-0 dlDlel">Gamers8 featuring Rocket League — Day 2 — Group Stage — Stream B</h3></a>
-						</div>
-					</div>
-					<div class="ScTextMargin-sc-10mto54-2 bcdHdk">
-						<p class="CoreText-sc-1txzju1-0 jiepBC">
-							<a data-test-selector="ChannelLink" data-a-target="preview-card-channel-link" class="ScCoreLink-sc-16kq0mq-0 eYjhIv tw-link" href="/gamers8gg_b">Gamers8GG_b</a>
-						</p>
-						<p class="CoreText-sc-1txzju1-0 jiepBC">
-							<a data-test-selector="GameLink" data-a-target="preview-card-game-link" class="ScCoreLink-sc-16kq0mq-0 eYjhIv tw-link" href="/directory/game/Rocket%20League">Rocket League</a>
-						</p>
-					</div>
-				</div>
-				<div class="ScImageWrapper-sc-10mto54-0 jrfBpi">
-					<a data-a-target="followed-vod-0" data-test-selector="preview-card-avatar" tabindex="-1" class="ScCoreLink-sc-16kq0mq-0 jSrrlW tw-link" href="/gamers8gg_b">
-						<div class="ScAspectRatio-sc-18km980-1 gxJZAm tw-aspect">
-							<div class="ScAspectSpacer-sc-18km980-0 kiiGFY"></div>
-							<div class="ScAvatar-sc-144b42z-0 jBfrnP tw-avatar">
-								<img class="InjectLayout-sc-1i43xsx-0 bEwPpb tw-image tw-image-avatar" alt="Gamers8GG_b" src="https://static-cdn.jtvnw.net/jtv_user_pictures/0eb8cbcd-8b0b-4842-924e-8f19b2500b55-profile_image-50x50.png">
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="Layout-sc-1xcs6mc-0 llNaON">
-					<button class="ScCoreButton-sc-ocjdkq-0 hUGgcQ ScButtonIcon-sc-9yap0r-0 hsbCAn" aria-label="remove" title="remove" data-a-target="remove-button">
-						<div class="ButtonIconFigure-sc-1emm8lf-0 kWtJXE">
-							<div class="ScFigure-sc-wkgzod-0 jNDIBh tw-svg">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-							</div>
-						</div>
-					</button>
-				</div>
-			</div>
-		</div>
-		<div class="Layout-sc-1xcs6mc-0 bZVrjx">
-			<div class="ScWrapper-sc-1wvuch4-0 dSyPJh tw-hover-accent-effect">
-				<div class="ScTransformWrapper-sc-1wvuch4-1 ScCornerTop-sc-1wvuch4-2 gEBqEV hPOElK"></div>
-				<div class="ScTransformWrapper-sc-1wvuch4-1 ScCornerBottom-sc-1wvuch4-3 fNwmtl dTxLuP"></div>
-				<div class="ScTransformWrapper-sc-1wvuch4-1 ScEdgeLeft-sc-1wvuch4-4 jhgGdR blwnUh"></div>
-				<div class="ScTransformWrapper-sc-1wvuch4-1 ScEdgeBottom-sc-1wvuch4-5 dJYDVl dWkueR"></div>
-				<div class="ScTransformWrapper-sc-1wvuch4-1 gMwbGx">
-					<a data-a-target="preview-card-image-link" tabindex="-1" class="ScCoreLink-sc-16kq0mq-0 jSrrlW tw-link" href="/videos/1908011335">
-						<div class="Layout-sc-1xcs6mc-0 hkwQCo">
-							<div class="ScAspectRatio-sc-18km980-1 hTTohL tw-aspect">
-								<div class="ScAspectSpacer-sc-18km980-0 ftHEOL"></div>
-								<div>
-									<div class="Layout-sc-1xcs6mc-0 kznuRn">
-										<div class="ScAspectRatio-sc-18km980-1 hTTohL tw-aspect">
-											<div class="ScAspectSpacer-sc-18km980-0 ftHEOL"></div>
-											<div class="preview-card-thumbnail__image">
-												<img alt="Gamers8 featuring Rocket League — Day 2 — Group Stage — Stream B" title="25 août 2023" data-test-selector="preview-card-thumbnail__image-selector" class="tw-image" src="https://vod-secure.twitch.tv/_404/404_processing_320x180.png">
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="ScPositionOver-sc-1shjvnv-0 itJKHI">
-								<div class="Layout-sc-1xcs6mc-0 blKZrX video-media-card__progress-bar-wrapper">
-									<div class="ScProgressBarWrapper-sc-1aarjxm-0 ihLNmB InjectLayout-sc-1i43xsx-0 lbthoL tw-progress-bar" role="progressbar" aria-valuenow="82.92555465817854" aria-valuemin="0" aria-valuemax="100">
-										<div value="82.92555465817854" data-a-target="tw-progress-bar-animation" class="ScProgressBarFill-sc-1aarjxm-1 ixZTCx InjectLayout-sc-1i43xsx-0 gCUKXF"></div>
-									</div>
-								</div>
-							</div>
-							<div class="ScPositionCorner-sc-1shjvnv-1 hoKYhE">
-								<div class="ScMediaCardStatWrapper-sc-anph5i-0 eBmJxH tw-media-card-stat">
-									5:50:49
-								</div>
-							</div>
-							<div class="ScPositionCorner-sc-1shjvnv-1 gUtzBI">
-								<div class="ScMediaCardStatWrapper-sc-anph5i-0 eBmJxH tw-media-card-stat">
-									979&nbsp;vues
-								</div>
-							</div>
-							<div class="ScPositionCorner-sc-1shjvnv-1 kBbWhP">
-								<div class="ScMediaCardStatWrapper-sc-anph5i-0 eBmJxH tw-media-card-stat">
-									il y a 6 heures
-								</div>
-							</div>
-						</div>
-					</a>
-				</div>
-			</div>
-		</div>
-	</article>
-</div>`;
+  const links = videoElement.querySelectorAll("a");
 
-  const titleLink = videoContainer.querySelector<HTMLAnchorElement>(
-    VIDEO_TITLE_LINK_SELECTOR
+  const titleLink = links[0];
+  const channelLink = links[1];
+  const categoryLink = links[2];
+  const channelAvatarElement = links[3].querySelector("img");
+  const previewCardLink = links[4];
+
+  const deleteButton = videoElement.querySelector(
+    "button[data-a-target='report-button-more-button']"
   );
 
-  const previewCardLink = videoContainer.querySelector<HTMLAnchorElement>(
-    VIDEO_THUMBNAIL_LINK_SELECTOR
-  );
+  if (!deleteButton) throw new Error("Could not find delete button");
 
-  const channelLink = videoContainer.querySelector<HTMLAnchorElement>(
-    VIDEO_CHANNEL_LINK_SELECTOR
-  );
+  const deleteButtonSVG = deleteButton.querySelector("svg");
+  const crossSVG = getXSVG();
 
-  const channelAvatarElement = videoContainer.querySelector<HTMLImageElement>(
-    VIDEO_CHANNEL_AVATAR_IMAGE_SELECTOR
-  );
-
-  const categoryLink = videoContainer.querySelector<HTMLAnchorElement>(
-    VIDEO_GAME_LINK_SELECTOR
-  );
-
-  const deleteButton = videoContainer.querySelector(
-    VIDEO_DELETE_BUTTON_SELECTOR
-  );
+  if (deleteButtonSVG) {
+    deleteButtonSVG.parentElement?.replaceChild(crossSVG, deleteButtonSVG);
+  }
 
   previewCardLink!.href = videoData.url;
   titleLink!.href = videoData.url;
@@ -163,15 +57,16 @@ const createVideoElement = (videoData: videoData) => {
   categoryLink!.href = videoData.category.url;
   categoryLink!.textContent = videoData.category.name;
 
+  deleteButton?.innerHTML;
   deleteButton!.addEventListener("click", () => {
     deleteVideo(videoData.url);
     displayVideos();
   });
 
-  return videoContainer;
+  return videoElement;
 };
 
-const clearSection = (section: HTMLElement) => {
+export const clearSection = (section: HTMLElement) => {
   const children = Array.from(section.children);
 
   children.forEach((child) => {
@@ -182,8 +77,8 @@ const clearSection = (section: HTMLElement) => {
 
 export const clearVideos = () => {
   // remove added content
-  const watchLaterVideoContainer = document.querySelector(
-    WATCH_LATER_CONTAINER_SELECTOR
+  const watchLaterVideoContainer = document.getElementById(
+    WATCH_LATER_CONTAINER_ID
   );
 
   watchLaterVideoContainer?.remove();
@@ -205,33 +100,44 @@ export const clearVideos = () => {
 };
 
 export const displayVideos = () => {
-  const videos = getVideos();
-
   const videoSection = document.getElementById("following-page-main-content");
 
-  if (!videoSection) {
-    console.error("Could not display videos : No video section");
-    return;
-  }
+  if (!videoSection) throw new Error("Could not find video section");
+
+  const videos = getVideos();
+  const videosContainer = document.querySelector(
+    "#following-page-main-content > div"
+  );
+
+  if (!videosContainer) throw new Error("Could not find video container");
+
+  const videoSectionHeader = document.querySelector(
+    "#following-page-main-content header"
+  ) as HTMLHeadingElement | null;
+
+  if (!videoSectionHeader)
+    throw new Error("Could not find video section header");
+
+  const videoSectionElement = videosContainer.querySelector("div");
+
+  if (!videoSectionElement) throw new Error("Could not find video element");
+
+  const videosContainerCopy = videosContainer.cloneNode(true) as HTMLElement;
+  videosContainerCopy.id = WATCH_LATER_CONTAINER_ID;
+  videosContainerCopy.innerHTML = "";
+
+  videos.forEach((video) => {
+    const videoElement = createVideoElementFromCopy(videoSectionElement, video);
+    videosContainerCopy.appendChild(videoElement);
+  });
+
+  const sectionHeader = createSectionHeaderFromCopy(
+    videoSectionHeader,
+    "Watch later"
+  );
 
   clearSection(videoSection);
 
-  const sectionTitle = createSectionTitle("Watch later");
-
-  videoSection.appendChild(sectionTitle);
-
-  const videoContainer = document.createElement("div");
-  videoContainer.classList.add(
-    "ScTower-sc-1sjzzes-0",
-    "czzjEE",
-    "tw-tower",
-    "watch-later-video-container"
-  );
-
-  videoSection.appendChild(videoContainer);
-
-  videos.forEach((video) => {
-    const videoElement = createVideoElement(video);
-    videoContainer.appendChild(videoElement);
-  });
+  videoSection.appendChild(sectionHeader);
+  videoSection.appendChild(videosContainerCopy);
 };
