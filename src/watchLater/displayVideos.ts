@@ -27,8 +27,10 @@ const createVideoElementFromCopy = (
   const titleLink = links[0];
   const channelLink = links[1];
   const categoryLink = links[2];
-  const channelAvatarElement = links[3].querySelector("img");
+  const channelAvatarLink = links[3];
   const previewCardLink = links[4];
+
+  const channelAvatarElement = channelAvatarLink.querySelector("img");
 
   const deleteButton = videoElement.querySelector(
     "button[data-a-target='report-button-more-button']"
@@ -52,6 +54,10 @@ const createVideoElementFromCopy = (
 
   channelLink!.href = videoData.channel.url;
   channelLink!.textContent = videoData.channel.name;
+
+  console.log(channelAvatarLink);
+
+  channelAvatarLink.href = videoData.channel.url;
   channelAvatarElement!.src = videoData.channel.thumbnail;
 
   categoryLink!.href = videoData.category.url;
