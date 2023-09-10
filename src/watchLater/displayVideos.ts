@@ -69,6 +69,7 @@ const createVideoElementFromCopy = (
   deleteButton?.innerHTML;
   deleteButton!.addEventListener("click", () => {
     deleteVideo(videoData.url);
+    clearVideos();
     displayVideos();
   });
 
