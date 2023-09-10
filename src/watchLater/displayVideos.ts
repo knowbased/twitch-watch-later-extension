@@ -30,7 +30,8 @@ const createVideoElementFromCopy = (
   const channelAvatarLink = links[3];
   const previewCardLink = links[4];
 
-  const channelAvatarElement = channelAvatarLink.querySelector("img");
+  const channelAvatarImg = channelAvatarLink.querySelector("img");
+  const previewCardImg = previewCardLink.querySelector("img");
 
   const deleteButton = videoElement.querySelector(
     "button[data-a-target='report-button-more-button']"
@@ -46,6 +47,10 @@ const createVideoElementFromCopy = (
   }
 
   previewCardLink!.href = videoData.url;
+
+  // TODO : get the real thumbnail
+  previewCardImg!.src =
+    "https://vod-secure.twitch.tv/_404/404_processing_320x180.png";
   titleLink!.href = videoData.url;
 
   const title = titleLink!.querySelector("h3");
@@ -55,10 +60,8 @@ const createVideoElementFromCopy = (
   channelLink!.href = videoData.channel.url;
   channelLink!.textContent = videoData.channel.name;
 
-  console.log(channelAvatarLink);
-
   channelAvatarLink.href = videoData.channel.url;
-  channelAvatarElement!.src = videoData.channel.thumbnail;
+  channelAvatarImg!.src = videoData.channel.thumbnail;
 
   categoryLink!.href = videoData.category.url;
   categoryLink!.textContent = videoData.category.name;
