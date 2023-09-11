@@ -105,7 +105,7 @@ export const clearVideos = () => {
 
   children.forEach((child) => {
     const htmlChild = child as HTMLElement;
-    htmlChild.style.display = "block";
+    htmlChild.style.display = "";
   });
 };
 

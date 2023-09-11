@@ -67,7 +67,8 @@ export const deselectElement = (element: HTMLElement) => {
 
   if (elementActiveTabIndicator) {
     elementActiveTabIndicator.style.display = "none";
-  }};
+  }
+};
 
 export const getCurrentTab = () => {
   const url = window.location.href;
