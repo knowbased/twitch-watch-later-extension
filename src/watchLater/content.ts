@@ -5,7 +5,7 @@ import {
   getCurrentTab,
   selectElement,
 } from "../utils/tabListSelection";
-import { clearVideos, displayVideos } from "./displayVideos";
+import { clearVideos } from "./displayVideos";
 import { injectWatchLaterButton } from "./watchLaterButton";
 import { injectWatchLaterTab } from "./watchLaterTab";
 
@@ -24,19 +24,15 @@ const handleTabListMutation = (tabList: Element) => {
   injectWatchLaterTab(tabList);
 };
 
-const handleFollowingPage = (newUrl: string) => {
+const handleFollowingPage = () => {
   clearVideos();
   selectElement(getCurrentTab());
 
-  if (newUrl.includes("watch-later")) {
-    displayVideos();
-  } else {
-    const watchLaterLink = document.querySelector(
-      'a[data-a-target="watch-later-tab"]'
-    ) as HTMLElement;
-    if (watchLaterLink) {
-      deselectElement(watchLaterLink);
-    }
+  const watchLaterLink = document.querySelector(
+    'a[data-a-target="watch-later-tab"]'
+  ) as HTMLElement;
+  if (watchLaterLink) {
+    deselectElement(watchLaterLink);
   }
 
   const tablist = document.querySelector(
@@ -72,7 +68,7 @@ const onUrlChange = (newUrl: string) => {
 
   if (newUrl.includes(followingUrl)) {
     console.log("following");
-    handleFollowingPage(newUrl);
+    handleFollowingPage();
   }
 
   if (newUrl.includes(vodUrl)) {

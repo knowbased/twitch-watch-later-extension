@@ -6,12 +6,23 @@ import {
 } from "../utils/tabListSelection";
 import { clearVideos, displayVideos } from "./displayVideos";
 
-const handleTabClick = (watchLaterTabLink: HTMLAnchorElement) => {
+const handleWatchLaterTabClick = (watchLaterTabLink: HTMLAnchorElement) => {
   const videoTabElement = document.querySelectorAll(
     "a[role='tab']"
   )[2] as HTMLAnchorElement | null;
 
   if (!videoTabElement) throw new Error("Could not find video tab");
+
+  if (getCurrentTab() === watchLaterTabLink) return;
+
+  if (window.location.pathname === "/directory/following/videos") {
+    selectElement(watchLaterTabLink);
+    deselectElement(getCurrentTab());
+
+    displayVideos();
+
+    return;
+  }
 
   videoTabElement.click();
   videoTabElement.addEventListener("click", () => {
@@ -20,21 +31,42 @@ const handleTabClick = (watchLaterTabLink: HTMLAnchorElement) => {
     deselectElement(watchLaterTabLink);
   });
 
-  setTimeout(() => {
-    displayVideos();
+  const videoSection = document.getElementById(
+    "following-page-main-content"
+  ) as HTMLElement | null;
 
-    selectElement(watchLaterTabLink);
-    const tablist = document.querySelector(
-      TABLIST_SELECTOR
-    ) as HTMLUListElement | null;
+  if (!videoSection) throw new Error("Could not find video section");
 
-    if (tablist) {
-      deselectElement(getCurrentTab());
-    }
-  }, 2000);
+  let mutationTimeout: number | undefined = undefined;
+
+  const timeWithoutMutations = 500;
+  
+  const observer = new MutationObserver(() => {
+    clearTimeout(mutationTimeout);
+
+    mutationTimeout = setTimeout(() => {
+      displayVideos();
+
+      selectElement(watchLaterTabLink);
+      const tablist = document.querySelector(
+        TABLIST_SELECTOR
+      ) as HTMLUListElement | null;
+
+      if (tablist) {
+        deselectElement(getCurrentTab());
+      }
+      observer.disconnect();
+    }, timeWithoutMutations);
+  });
+
+  observer.observe(videoSection, { childList: true, subtree: false });
 };
 
-const createFollowingTabFromCopy = (tabToCopy: Element, tabName: string) => {
+const createFollowingTabFromCopy = (
+  tabToCopy: Element,
+  tabName: string,
+  onClick: (tabLink: HTMLAnchorElement) => void
+) => {
   const tabElement = tabToCopy.cloneNode(true) as HTMLLIElement;
 
   const tabLink = tabElement.querySelector("a") as HTMLAnchorElement;
@@ -43,7 +75,7 @@ const createFollowingTabFromCopy = (tabToCopy: Element, tabName: string) => {
 
   tabElement.setAttribute("data-index", "5");
   tabElement.addEventListener("click", () => {
-    handleTabClick(tabLink);
+    onClick(tabLink);
   });
 
   tabLink.setAttribute("data-a-target", "watch-later-tab");
@@ -66,7 +98,11 @@ export const injectWatchLaterTab = (tabList: Element) => {
     throw new Error("Following tab not found");
   }
 
-  const watchLaterTab = createFollowingTabFromCopy(followingTab, "Watch later");
+  const watchLaterTab = createFollowingTabFromCopy(
+    followingTab,
+    "Watch later",
+    handleWatchLaterTabClick
+  );
 
   tabList.appendChild(watchLaterTab);
 };
