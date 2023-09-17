@@ -70,7 +70,7 @@ export const deselectElement = (element: HTMLElement) => {
   }
 };
 
-export const getCurrentTab = () => {
+export const getCurrentTabByUrl = () => {
   const url = window.location.href;
 
   const urlCategory = url.split("/")[5];
@@ -92,9 +92,6 @@ export const getCurrentTab = () => {
       break;
     case "channels":
       tabIndex = 4;
-      break;
-    case "watch-later":
-      tabIndex = 5;
       break;
   }
 

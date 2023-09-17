@@ -2,7 +2,7 @@ import { TABLIST_SELECTOR } from "../style/CSSVariables";
 import {
   selectElement,
   deselectElement,
-  getCurrentTab,
+  getCurrentTabByUrl,
 } from "../utils/tabListSelection";
 import { clearVideos, displayVideos } from "./displayVideos";
 
@@ -13,11 +13,11 @@ const handleWatchLaterTabClick = (watchLaterTabLink: HTMLAnchorElement) => {
 
   if (!videoTabElement) throw new Error("Could not find video tab");
 
-  if (getCurrentTab() === watchLaterTabLink) return;
+  if (watchLaterTabLink.getAttribute("aria-selected") === "true") return;
 
   if (window.location.pathname === "/directory/following/videos") {
     selectElement(watchLaterTabLink);
-    deselectElement(getCurrentTab());
+    deselectElement(getCurrentTabByUrl());
 
     displayVideos();
 
@@ -27,7 +27,7 @@ const handleWatchLaterTabClick = (watchLaterTabLink: HTMLAnchorElement) => {
   videoTabElement.click();
   videoTabElement.addEventListener("click", () => {
     clearVideos();
-    selectElement(getCurrentTab());
+    selectElement(getCurrentTabByUrl());
     deselectElement(watchLaterTabLink);
   });
 
@@ -40,7 +40,7 @@ const handleWatchLaterTabClick = (watchLaterTabLink: HTMLAnchorElement) => {
   let mutationTimeout: number | undefined = undefined;
 
   const timeWithoutMutations = 500;
-  
+
   const observer = new MutationObserver(() => {
     clearTimeout(mutationTimeout);
 
@@ -53,7 +53,7 @@ const handleWatchLaterTabClick = (watchLaterTabLink: HTMLAnchorElement) => {
       ) as HTMLUListElement | null;
 
       if (tablist) {
-        deselectElement(getCurrentTab());
+        deselectElement(getCurrentTabByUrl());
       }
       observer.disconnect();
     }, timeWithoutMutations);
