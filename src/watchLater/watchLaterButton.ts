@@ -1,10 +1,11 @@
 import { getClockSVG } from "../utils/getClockSVG";
-import { saveVOD } from "./saveVOD";
+import { getVodInfo, saveVOD } from "./saveVOD";
+import { isVideoSaved } from "./videoStorage";
 
 export const createButtonElementFromCopy = (
   layoutToCopy: Element,
   buttonText: string,
-  clickhandler: () => void
+  clickhandler: (buttonElement: HTMLButtonElement) => void
 ) => {
   const vodButtonLayout = layoutToCopy.cloneNode(true) as HTMLElement;
 
@@ -22,7 +23,7 @@ export const createButtonElementFromCopy = (
   labelElement.textContent = buttonText;
   vodButton.setAttribute("aria-label", buttonText);
 
-  vodButton.addEventListener("click", clickhandler);
+  vodButton.addEventListener("click", () => clickhandler(vodButton));
 
   const svgElement = getClockSVG();
   const vodButtonSVG = vodButton.querySelector("svg");
@@ -34,6 +35,27 @@ export const createButtonElementFromCopy = (
   }
 
   return vodButtonLayout;
+};
+
+const desactiveButton = (button: HTMLButtonElement) => {
+  button.style.opacity = "0.5";
+  button.disabled = true;
+  button.style.cursor = "default";
+};
+
+const desactiveButtonIfAlreadySaved = (button: HTMLButtonElement) => {
+  const { url } = getVodInfo();
+  const isAlreadySaved = isVideoSaved(url);
+
+  if (isAlreadySaved) {
+    desactiveButton(button);
+  }
+};
+
+const handleWatchLaterButtonClick = (watchLaterButton: HTMLButtonElement) => {
+  saveVOD();
+
+  desactiveButton(watchLaterButton);
 };
 
 export const injectWatchLaterButton = (shareButton: Element) => {
@@ -54,8 +76,14 @@ export const injectWatchLaterButton = (shareButton: Element) => {
   const watchLaterButtonContainer = createButtonElementFromCopy(
     shareButtonLayout,
     "Watch later",
-    saveVOD
+    handleWatchLaterButtonClick
   );
+
+  const watchLaterButton = watchLaterButtonContainer.querySelector(
+    "button"
+  ) as HTMLButtonElement;
+
+  desactiveButtonIfAlreadySaved(watchLaterButton);
 
   buttonsContainer.insertBefore(
     watchLaterButtonContainer,

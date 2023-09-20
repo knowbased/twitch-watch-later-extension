@@ -1,7 +1,7 @@
 import { VOD_TITLE_SELECTOR } from "../style/CSSVariables";
-import { addVideo } from "./videoStorage";
+import { addVideo, videoData } from "./videoStorage";
 
-export const saveVOD = () => {
+export const getVodInfo = () => {
   const videoTitleElement = document.querySelector(VOD_TITLE_SELECTOR);
   const channelTitleLink = document.querySelector<HTMLAnchorElement>(
     ".metadata-layout__support a"
@@ -36,7 +36,7 @@ export const saveVOD = () => {
   const categoryNameElement = categoryLink.querySelector("p");
   const categoryName = categoryNameElement?.textContent || "Category";
 
-  addVideo({
+  const videoInfo: videoData = {
     title: videoTitle || "",
     url: videoUrl,
     channel: {
@@ -48,7 +48,15 @@ export const saveVOD = () => {
       name: categoryName,
       url: categoryUrl,
     },
-  });
+  };
+
+  return videoInfo;
+};
+
+export const saveVOD = () => {
+  const videoInfo = getVodInfo();
+
+  addVideo(videoInfo);
 
   console.log("Video added to watch later");
 };

@@ -34,5 +34,16 @@ export const deleteVideo = (videoUrl: string) => {
 
   const updatedVideos = videos.filter((video) => video.url !== videoUrl);
 
-  localStorage.setItem("twitchVideosToWatchLater", JSON.stringify(updatedVideos));
+  localStorage.setItem(
+    "twitchVideosToWatchLater",
+    JSON.stringify(updatedVideos)
+  );
+};
+
+export const isVideoSaved = (videoUrl: string) => {
+  const videos = getVideos();
+
+  const videoExists = videos.some((video) => video.url === videoUrl);
+
+  return videoExists;
 };
