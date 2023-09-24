@@ -4,7 +4,6 @@ export const observeUrl = (onChange: (url: string) => void) => {
     if (location.href !== previousUrl) {
       onChange(location.href);
       previousUrl = location.href;
-      console.log("The url has changed!");
     }
   });
 

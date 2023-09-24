@@ -6,9 +6,7 @@ export const selectElement = (element: HTMLElement) => {
     `${TABLINK_SELECTOR}[aria-selected="true"]`
   );
 
-  if (!selectedElement) {
-    throw new Error("No selected element found");
-  }
+  if (!selectedElement) return;
 
   element.setAttribute("aria-selected", "true");
 
