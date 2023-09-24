@@ -1,27 +1,53 @@
-# React + TypeScript + Vite
+# Twitch Watch Later Extension
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+  <img src="./src/assets/twitch-watch-later-logo-128x128.png" alt="Twitch Watch Later Logo" />
+</p>
 
-Currently, two official plugins are available:
+The Twitch Watch Later extension is a handy tool for Twitch enthusiasts who want to save videos for later viewing. This extension allows you to easily add videos to your "Watch Later" list and quickly access them whenever you like.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Table of Contents
 
-## Expanding the ESLint configuration
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Features
 
-- Configure the top-level `parserOptions` property like this:
+- **Watch Later Button:** The extension adds a "Watch Later" button below Twitch videos, allowing you to quickly save a video for later.
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+- **Watch Later Tab:** A new "Watch Later" tab is added to your Twitch "Following" page, where you can see all the videos you've saved.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- **Local Storage:** Saved videos are stored locally in your browser using LocalStorage.
+
+## Installation
+
+To install the Twitch Watch Later extension, follow these simple steps:
+
+1. [Download the extension from the zip file URL here.](https://github.com/knowbased/twitch-watch-later-extension/releases/tag/1.0.0)
+
+2. Extract the contents of the zip file to a directory of your choice.
+
+3. Open your Google Chrome browser.
+
+4. Go to the extensions menu by clicking the three dots in the upper right corner of your browser.
+
+5. Select "Extensions" from the menu.
+
+6. Enable "Developer Mode" by toggling the switch at the top right of the page.
+
+7. Click on "Load unpacked" and select the folder where you extracted the extension files.
+
+8. The Twitch Watch Later extension is now installed and ready to use.
+
+## Usage
+
+Using the Twitch Watch Later extension is straightforward:
+
+1. **Select a Video:** Browse Twitch and find the video you want to watch later.
+
+2. **Click "Watch Later":** Below the video, click the "Watch Later" button to add it to your list.
+
+3. **Access the "Watch Later" Tab:** Navigate to the "Following" page on Twitch and click the newly added "Watch Later" tab.
+
+4. **Enjoy Your Saved Videos:** You can now watch your saved videos at any time.
