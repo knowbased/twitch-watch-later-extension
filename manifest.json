@@ -1,11 +1,11 @@
 {
-  "name": "twitch watch later",
-  "description": "",
-  "version": "0.0.1",
+  "name": "Twitch Watch Later",
+  "description": "Save and watch Twitch VODs later with ease.",
+  "version": "1.0.0",
   "manifest_version": 3,
   "action": {
     "default_popup": "index.html",
-    "default_title": "Open Extension App"
+    "default_title": "Twitch Watch Later"
   },
   "content_scripts": [
     {
