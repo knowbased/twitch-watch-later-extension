@@ -20,26 +20,6 @@ The Twitch Watch Later extension is a handy tool for Twitch enthusiasts who want
 
 - **Local Storage:** Saved videos are stored locally in your browser using LocalStorage.
 
-## Installation
-
-To install the Twitch Watch Later extension, follow these simple steps:
-
-1. [Download the extension from the zip file URL here.](https://github.com/knowbased/twitch-watch-later-extension/releases/tag/1.0.0)
-
-2. Extract the contents of the zip file to a directory of your choice.
-
-3. Open your Google Chrome browser.
-
-4. Go to the extensions menu by clicking the three dots in the upper right corner of your browser.
-
-5. Select "Extensions" from the menu.
-
-6. Enable "Developer Mode" by toggling the switch at the top right of the page.
-
-7. Click on "Load unpacked" and select the folder where you extracted the extension files.
-
-8. The Twitch Watch Later extension is now installed and ready to use.
-
 ## Usage
 
 Using the Twitch Watch Later extension is straightforward:
