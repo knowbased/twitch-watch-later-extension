@@ -2,49 +2,16 @@ import { TABLINK_SELECTOR } from "../style/CSSVariables";
 import { replaceAllElementClasses } from "./replaceClasses";
 
 export const selectElement = (element: HTMLElement) => {
+  console.log("element: ", element);
   const selectedElement = document.querySelector(
     `${TABLINK_SELECTOR}[aria-selected="true"]`
   );
 
-  if (!selectedElement) return;
+  if (!selectedElement || selectedElement === element) return;
 
   element.setAttribute("aria-selected", "true");
 
   replaceAllElementClasses(element, selectedElement);
-
-  const elementActiveTabIndicator = element.querySelector(
-    'div[data-test-selector="ACTIVE_TAB_INDICATOR"]'
-  ) as HTMLElement;
-
-  if (elementActiveTabIndicator) {
-    elementActiveTabIndicator.style.display = "block";
-    return;
-  }
-
-  const selectedElementActiveTabIndicator = selectedElement.querySelector(
-    'div[data-test-selector="ACTIVE_TAB_INDICATOR"]'
-  );
-
-  const selectedElementActiveTabIndicatorParent =
-    selectedElementActiveTabIndicator?.parentElement;
-
-  if (
-    !selectedElementActiveTabIndicator ||
-    !selectedElementActiveTabIndicatorParent
-  ) {
-    throw new Error("No selected element active tab indicator found");
-  }
-
-  const selectedElementActiveTabIndicatorClone =
-    selectedElementActiveTabIndicator.cloneNode(true) as HTMLElement;
-
-  const elementActiveTabIndicatorParent = element.querySelector(
-    `div[class="${selectedElementActiveTabIndicatorParent.className}"]`
-  );
-
-  elementActiveTabIndicatorParent?.appendChild(
-    selectedElementActiveTabIndicatorClone
-  );
 };
 
 export const deselectElement = (element: HTMLElement) => {
