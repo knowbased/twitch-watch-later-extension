@@ -20,7 +20,7 @@ function App() {
           <p>1. Select the video you want to save for later.</p>
           <p>2. Click on the "Watch Later" button below the player.</p>
           <p>3. Navigate to the following tab.</p>
-          <p>4. Click on the new "Watch Later" tab.</p>
+          <p>4. Click on the "Videos" tab.</p>
           <p>5. Enjoy your saved videos!</p>
         </section>
       </main>

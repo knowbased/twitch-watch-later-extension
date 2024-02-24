@@ -16,7 +16,7 @@ The Twitch Watch Later extension is a handy tool for Twitch enthusiasts who want
 
 - **Watch Later Button:** The extension adds a "Watch Later" button below Twitch videos, allowing you to quickly save a video for later.
 
-- **Watch Later Tab:** A new "Watch Later" tab is added to your Twitch "Following" page, where you can see all the videos you've saved.
+- **Saved Videos Integration**: Your saved videos will be integrated into the existing "Videos" tab on your Twitch "Following" page.
 
 - **Local Storage:** Saved videos are stored locally in your browser using LocalStorage.
 
@@ -28,6 +28,6 @@ Using the Twitch Watch Later extension is straightforward:
 
 2. **Click "Watch Later":** Below the video, click the "Watch Later" button to add it to your list.
 
-3. **Access the "Watch Later" Tab:** Navigate to the "Following" page on Twitch and click the newly added "Watch Later" tab.
+3. **Access the "Videos" Tab:** Navigate to the "Following" page on Twitch and click on the "Videos" tab.
 
 4. **Enjoy Your Saved Videos:** You can now watch your saved videos at any time.
