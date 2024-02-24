@@ -1,4 +1,4 @@
-import { WATCH_LATER_CONTAINER_ID } from "../style/CSSVariables";
+import { WATCH_LATER_CONTAINER_ID } from "../utils/variables";
 import { getXSVG } from "../utils/getXSVG";
 import { deleteVideo, getVideos, videoData } from "./videoStorage";
 
@@ -76,15 +76,6 @@ const createVideoElementFromCopy = (
   return videoElement;
 };
 
-export const clearSection = (section: HTMLElement) => {
-  const children = Array.from(section.children);
-
-  children.forEach((child) => {
-    const htmlChild = child as HTMLElement;
-    htmlChild.style.display = "none";
-  });
-};
-
 export const clearVideos = () => {
   // remove added content
   const watchLaterVideoContainer = document.getElementById(
@@ -95,18 +86,6 @@ export const clearVideos = () => {
 
   const header = document.querySelector('header[aria-label="Watch later"]');
   header?.remove();
-
-  // display the previously hidden content
-  const section = document.getElementById("following-page-main-content");
-
-  if (!section) return;
-
-  const children = Array.from(section.children);
-
-  children.forEach((child) => {
-    const htmlChild = child as HTMLElement;
-    htmlChild.style.display = "";
-  });
 };
 
 export const displayVideos = () => {
@@ -114,7 +93,12 @@ export const displayVideos = () => {
 
   if (!videoSection) throw new Error("Could not find video section");
 
+  const videoSectionParent = videoSection.parentElement;
+
   const videos = getVideos();
+
+  if (videos.length === 0) return;
+
   const videosContainer = document.querySelector(
     "#following-page-main-content > div"
   );
@@ -138,6 +122,7 @@ export const displayVideos = () => {
 
   videos.forEach((video) => {
     const videoElement = createVideoElementFromCopy(videoSectionElement, video);
+    videoElement.style.flex = "none";
     videosContainerCopy.appendChild(videoElement);
   });
 
@@ -146,8 +131,6 @@ export const displayVideos = () => {
     "Watch later"
   );
 
-  clearSection(videoSection);
-
-  videoSection.appendChild(sectionHeader);
-  videoSection.appendChild(videosContainerCopy);
+  videoSectionParent?.insertBefore(sectionHeader, videoSection);
+  videoSectionParent?.insertBefore(videosContainerCopy, videoSection);
 };

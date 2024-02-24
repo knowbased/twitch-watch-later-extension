@@ -1,4 +1,4 @@
-import { VOD_TITLE_SELECTOR } from "../style/CSSVariables";
+import { VOD_TITLE_SELECTOR } from "../utils/variables";
 import { addVideo, videoData } from "./videoStorage";
 
 export const getVodInfo = () => {
